@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+
 import lv.bootcamp.shelter.model.Animal;
 
 
@@ -39,6 +41,8 @@ public class ReportExportService {
         private void writeHeader (BufferedWriter writer, ShelterReportData data) throws IOException {
             writeLine(writer, "=== Shelter Intake Report ===");
             writeLine(writer, "Date generated: "
+                    // using zone "Europe/Riga" because SonarQube got error
+                    // and now report date does not depend on computer settings
                     + LocalDate.now(ZoneId.of("Europe/Riga")).format(DATE_FORMATTER));
             writeLine(writer);
             writeLine(writer, "Total imported: " + data.importResult().allAnimals().size());
@@ -66,6 +70,8 @@ public class ReportExportService {
             writeLine(writer, "--- Oldest per species ---");
             for (String species : sortedSpecies(data)) {
                 Animal oldest = data.oldestAnimalPerSpecies().get(species);
+
+                // a species may have no animals with a known age
                 String text = (oldest == null)
                         ? "no known age"
                         : oldest.getName() + " (age " + oldest.getAge() + ")";
@@ -80,8 +86,11 @@ public class ReportExportService {
         }
 
         // stretch goal 1: sorted by species
-        private List<String> sortedSpecies (ShelterReportData data){
-            return data.uniqueSpecies().stream().sorted().toList();
+        private List<String> sortedSpecies(ShelterReportData data) {
+            return data.animalsBySpecies().entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey())
+                    .map(Map.Entry::getKey)
+                    .toList();
         }
 
         private void writeLine (BufferedWriter writer, String text) throws IOException {

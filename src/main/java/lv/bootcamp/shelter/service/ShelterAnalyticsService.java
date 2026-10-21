@@ -3,8 +3,6 @@ package lv.bootcamp.shelter.service;
 import lv.bootcamp.shelter.model.Animal;
 import lv.bootcamp.shelter.service.data.ImportResult;
 import lv.bootcamp.shelter.service.data.ShelterReportData;
-import lv.bootcamp.shelter.utill.helpCheckMethod;
-
 import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
@@ -23,7 +21,7 @@ public class ShelterAnalyticsService {
             // unique animal species
             uniqueSpecies.add(species);
 
-            // group by species
+            // create a list for a new species and add the animal to its group
             animalsBySpecies
                     .computeIfAbsent(species, key -> new ArrayList<>())
                     .add(animal);

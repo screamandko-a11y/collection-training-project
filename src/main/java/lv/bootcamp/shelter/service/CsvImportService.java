@@ -48,6 +48,7 @@ public class CsvImportService {
         try {
             return Optional.of(parseAnimal(line));
         } catch (IllegalArgumentException | DateTimeParseException e) {
+            // log the invalid row and continue reading the rows
             log.warn("Skipping row {}: {}", rowNumber, e.getMessage());
             return Optional.empty();
         }
@@ -58,6 +59,7 @@ public class CsvImportService {
             throw new IllegalArgumentException("Empty row");
         }
 
+        // keep empty fields at the end so we can check missing values
         String[] columns = line.split(",", -1);
         if (columns.length != 5) {
             throw new IllegalArgumentException(
