@@ -3,10 +3,14 @@ package lv.bootcamp.shelter.service;
 import lv.bootcamp.shelter.service.data.ShelterReportData;
 
 import java.nio.file.Path;
+import java.time.format.DateTimeFormatter;
 
 public class ReportExportService {
 
     public void writeReport(Path outputPath, ShelterReportData reportData) {
+
+        DateTimeFormatter dateFormatter =
+                DateTimeFormatter.ofPattern("dd.MM.yyyy");
         // TODO Step 4:
         // 1) Write upload-report.txt in required format.
         // 2) Include generated date, imported/skipped totals.

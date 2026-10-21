@@ -77,9 +77,6 @@ public class CsvImportService {
         }
 
         Integer age = ageText.isEmpty() ? null : Integer.valueOf(ageText);
-        if (!ageText.isEmpty()) {
-            age = Integer.valueOf(ageText);
-        }
 
         if (age != null && age <= 0) {
             throw new IllegalArgumentException(
