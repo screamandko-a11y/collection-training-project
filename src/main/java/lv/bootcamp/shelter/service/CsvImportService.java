@@ -77,6 +77,15 @@ public class CsvImportService {
         }
 
         Integer age = ageText.isEmpty() ? null : Integer.valueOf(ageText);
+        if (!ageText.isEmpty()) {
+            age = Integer.valueOf(ageText);
+        }
+
+        if (age != null && age <= 0) {
+            throw new IllegalArgumentException(
+                    "Age must be greater than 0: " + age
+            );
+        }
 
         if (!vaccinatedText.equalsIgnoreCase("true")
                 && !vaccinatedText.equalsIgnoreCase("false")) {
